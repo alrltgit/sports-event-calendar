@@ -1,12 +1,32 @@
-INSERT INTO Events (ID, Date_Time, Competition_ID, Venue_ID, Status) VALUES
-(1, "2026-04-14 17:30:00", 1, 1, "scheduled"),
-(2, "2026-04-1", 2, 2, "scheduled"),
-(3, "2026-04-1 18:15:00", 2, 3, "scheduled"),
-(4, "2026-04-8", 2, 4, "scheduled"),
-(5, "2025-11-23 08:50:00", 3, 5, "finished"),
-(6, "2025-11-30 09:30:00", 3, 6, "finished"),
-(7, "2026-03-20 14:00:00", 4, 7, "live"),
-(8, "2026-06-11 08:00:00", 5, 8, "live");
+INSERT INTO Sports (ID, Name) VALUES
+(1, "Basketball"),
+(2, "Cycling"),
+(3, "Cricket"),
+(4, "Football"),
+(5, "MMA"),
+(6, "Tennis");
+
+INSERT INTO Venues (ID, Name, Location) VALUES
+(1, "Prince Philip Hall", "Zaragoza, Spain"),
+(2, "Schaeffler Arena Savaria", "Szombathely, Hungary"),
+(3, "PAOK Sports Arena", "Thessaloniki, Greece"),
+(4, "Palacio de los Deportes", "Murcia, Spain"),
+(5, "-", "Tabor,  Czech Republic"),
+(6, "-", "Flamanville,  France"),
+(7, "Tafawa Balewa Square Cricket Oval", "Lagos, Nigeria"),
+(8, "Guadalajara Stadium", "Zapopan, Mexico"),
+(9, "Toronto Stadium", "Toronto, Canada"),
+(10, "Palacio Vistalegre", "Madrid, Spain"),
+(11, "-", "Miami, USA");
+
+INSERT INTO Competitions (ID, Name, Sport_ID) VALUES
+(1, "EuroLeague Women 2025-26", 1),
+(2, "FIBA Europe Cup 2025-26", 1),
+(3, "2025/26 Cyclo-Cross World Cup", 2),
+(4, "Nigeria Invitational Women's T20I Tournament", 3),
+(5, "FIFA World Cup 2026", 4),
+(6, "PFL Madrid", 5),
+(7, "2026 Miami Open presented by Itau Scores", 6);
 
 INSERT INTO Teams (ID, Name, Description, Sport_ID) VALUES
 (1, "Spar Girona", "-", 1),
@@ -22,7 +42,28 @@ INSERT INTO Teams (ID, Name, Description, Sport_ID) VALUES
 (11, "DELL'OLIO Francesco ", "-", 2),
 (12, "DEVOS Victor ", "-", 2),
 (13, "Nigeria", "-", 3),
-(14, "Zimbabwe Under-19", "-", 3);
+(14, "Zimbabwe Under-19", "-", 3),
+(15, "Korean Republic", "-", 4),
+(16, "European Play-Off D", "-", 4),
+(17, "Canada", "-", 4),
+(18, "TBD", "-", 4),
+(19, "Costello van Steenis", "-", 5),
+(20, "Fabian Edwards", "-", 5),
+(21, "Aleksandar Kovacevic", "-", 6),
+(22, "Rei Sakamoto", "-", 6);
+
+INSERT INTO Events (ID, Date_Time, Competition_ID, Venue_ID, Status) VALUES
+(1, "2026-04-14 17:30:00", 1, 1, "scheduled"),
+(2, "2026-04-1", 2, 2, "scheduled"),
+(3, "2026-04-1 18:15:00", 2, 3, "scheduled"),
+(4, "2026-04-8", 2, 4, "scheduled"),
+(5, "2025-11-23 08:50:00", 3, 5, "finished"),
+(6, "2025-11-30 09:30:00", 3, 6, "finished"),
+(7, "2026-03-20 14:00:00", 4, 7, "live"),
+(8, "2026-06-11 08:00:00", 5, 8, "scheduled"),
+(9, "2026-06-12 15:00:00", 5, 9, "scheduled"),
+(10, "2026-03-20 18:00:00", 6, 10, "live"),
+(11, "2026-03-16 17:30:00", 7, 11, "finished");
 
 INSERT INTO Event_Participants (ID, Event_ID, Team_ID, Role) VALUES
 (1, 1, 1, "-"),
@@ -43,29 +84,10 @@ INSERT INTO Event_Participants (ID, Event_ID, Team_ID, Role) VALUES
 (16, 6, 11, "-"),
 (17, 6, 12, "-"),
 (18, 7, 13, "-"),
-(19, 7, 14, "-");
-
-INSERT INTO Competitions (ID, Name, Sport_ID) VALUES
-(1, "EuroLeague Women 2025-26", 1),
-(2, "FIBA Europe Cup 2025-26", 1),
-(3, "2025/26 Cyclo-Cross World Cup", 2),
-(4, "Nigeria Invitational Women's T20I Tournament", 3),
-(5, "FIFA World Cup 2026", 4);
-
-INSERT INTO Sports (ID, Name) VALUES
-(1, "Basketball"),
-(2, "Cycling"),
-(3, "Cricket"),
-(4, "Football"),
-(5, "MMA"),
-(6, "Tennis");
-
-INSERT INTO Venues (ID, Name, Location) VALUES
-(1, "Prince Philip Hall", "Zaragoza, Spain"),
-(2, "Schaeffler Arena Savaria", "Szombathely, Hungary"),
-(3, "PAOK Sports Arena", "Thessaloniki, Greece"),
-(4, "Palacio de los Deportes", "Murcia, Spain"),
-(5, "-", "Tabor,  Czech Republic"),
-(6, "-", "Flamanville,  France"),
-(7, "Tafawa Balewa Square Cricket Oval", "Lagos, Nigeria"),
-(8, "Guadalajara Stadium", "Zapopan, Mexico");
+(19, 7, 14, "-"),
+(20, 8, 15, "-"),
+(21, 8, 16, "-"),
+(22, 9, 17, "-"),
+(23, 9, 18, "-"),
+(24, 10, 19, "-"),
+(25, 10, 20, "-");

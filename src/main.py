@@ -1,5 +1,8 @@
+from Database import Database
+
 def main():
-    print("Hello World")
+    db = Database()
+    db.connect()
 
 if __name__ == "__main__":
     main()
