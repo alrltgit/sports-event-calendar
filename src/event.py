@@ -1,5 +1,5 @@
 class Event:
-    def __init__(self, db, date, competition, venue, status, sport, team, location=None, team_description=None):
+    def __init__(self, db, date=None, competition=None, venue=None, status=None, sport=None, team=None, location=None, team_description=None):
         self.date = date
         self.competition = competition
         self.venue = venue

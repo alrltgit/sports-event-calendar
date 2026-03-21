@@ -1,24 +1,33 @@
+from flask import Flask, render_template
 from database import Database
 from event import Event
 
-def main():
-    db = Database()
+app = Flask(
+    __name__,
+    template_folder = "../templates",
+    static_folder = "../static"
+)
 
-    event = Event(db, "2026-03-21 17:30:00", "World Cup", "Stadium", "live", "Football", "Poland")
+db = Database()
+events_table = Event(db)
 
-    # event.insert_event()
+@app.route("/")
+def home():
+    return render_template("home.html")
 
-    # records = event.get_events()
-    # for record in records:
-    #     print(record)
+@app.route("/calendar")
+def calendar():
+    return render_template("calendar.html")
 
-    # records = event.get_event("competition", "FIBA Europe Cup 2025-26")
-    # records = event.get_event("date", "2026-04-14 17:30:00")
-    # records = event.get_event("venue", "Prince Philip Hall")
-    records = event.get_event("status", "finished")
-    print(records)
+@app.route("/competitions")
+def competitions():
+    return render_template(competitions.html)
 
-    db.sports_events_db.close()
+@app.route("/teams")
+def teams():
+    return render_template("teams.html")
+
+db.sports_events_db.close()
 
 if __name__ == "__main__":
-    main()
+    app.run()
