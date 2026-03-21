@@ -23,7 +23,7 @@ CREATE TABLE Competitions (
 CREATE TABLE Teams (
 	ID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(45) NOT NULL,
-    Description VARCHAR(100) NOT NULL,
+    Description VARCHAR(100),
     Sport_ID INT NOT NULL,
     CONSTRAINT _fk_teams_to_sport FOREIGN KEY (Sport_ID) REFERENCES Sports(ID)
 );

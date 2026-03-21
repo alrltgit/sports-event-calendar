@@ -30,38 +30,20 @@ class Database:
 
         self.cursor = self.sports_events_db.cursor()
 
-    def add_data(self, event):
+    def add_data(self, sql_query, new_data):
         try:
-            query = """
-                INSERT INTO Events (Date_Time, Competition_ID, Venue_ID, Status) VALUES 
-                (%s, %s, %s, %s)
-                """
-            data = (event.date_time, event.competition_id, event.venue_id, event.status)
-
-            self.cursor.execute(query, data)
+            self.cursor.execute(sql_query, new_data)
             self.sports_events_db.commit()
 
         except Exception as e:
             raise DbConnectionError(f"Failed to add data: {e}")
 
-    def get_data(self):
+    def get_data(self, sql_query):
         try:
-            query = """
-                SELECT 
-                    e.Date_Time, 
-                    e.Status, 
-                    c.Name, 
-                    v.Name
-                FROM Events e
-                JOIN Competitions c
-                    ON e.Competition_ID = c.ID
-                JOIN Venues v
-                    ON e.Venue_ID = v.ID
-                """
-
+            query = sql_query
             self.cursor.execute(query)
             data = self.cursor.fetchall()
-            print(data)
+
         except Exception as e:
             raise DbConnectionError(f"Failed to add data: {e}")
 

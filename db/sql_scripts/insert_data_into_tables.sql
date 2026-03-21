@@ -90,4 +90,6 @@ INSERT INTO Event_Participants (Event_ID, Team_ID, Role) VALUES
 (9, 17, "-"),
 (9, 18, "-"),
 (10, 19, "-"),
-(10, 20, "-");
+(10, 20, "-"),
+(11, 21, "-"),
+(11, 22, "-");
