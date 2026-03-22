@@ -46,11 +46,17 @@ class Event:
 
         sport_id = self.db.get_data(sport_query)
 
+
+        if not sport_id:
+            sport_query = f"INSERT INTO Sports (Name) VALUES (%s)"
+            self.db.add_data(sport_query, (self.sport, ))
+            sport_id = self.db.cursor.lastrowid
+
         competition_data = (self.competition, sport_id[0][0])
         self.db.add_data(competition_query, competition_data)
         competition_id = self.db.cursor.lastrowid
 
-        venue_data =  (self.venue, "-")
+        venue_data =  (self.venue, self.location)
         self.db.add_data(venue_query, venue_data)
         venue_id = self.db.cursor.lastrowid
 

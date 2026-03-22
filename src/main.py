@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from database import Database
 from event import Event
 
@@ -35,6 +35,22 @@ def get_data():
             "team": record[6]
         })
     return jsonify(records)
+
+@app.route("/api/post_events", methods=['POST'])
+def insert_data():
+    data = request.get_json()
+    new_event = Event(db,
+        date=data['date'],
+        competition=data['competition'],
+        venue=data['venue'],
+        status=data['status'],
+        sport=data['sport'],
+        team=data['participants'],
+        location=data['location']
+    )
+
+    new_event.insert_event()
+    return jsonify({"message": "Event added successfully"}, 200)
 
 @app.route("/competitions")
 def competitions():

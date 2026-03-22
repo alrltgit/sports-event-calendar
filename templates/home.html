@@ -16,6 +16,35 @@
         <section class="head">
             <h1>Sports Event Calendar</h1>
             <p>Track upcoming matches, live events, and results in one place</p>
+            <button class="add-event-btn">Add Event</button>
+
+            <div id="add-event" class="new-event">
+                <div class="event-content">
+                    <span class="close">&times;</span>
+                    <h2>Add New Event</h2>
+                    <form id="eventForm">
+                        <label for="date">Date:</label>
+                        <input type="text" name="date" id="date">
+
+                        <label for="competition">Competition:</label>
+                        <input type="text" name="competition" id="competition">
+
+                        <label for="sport">Sport:</label>
+                        <input type="text" name="sport" id="sport">
+
+                        <label for="venue">Venue:</label>
+                        <input type="text" name="venue" id="venue">
+
+                        <label for="location">Location:</label>
+                        <input type="text" name="location" id="location">
+
+                        <label for="participants">Participants:</label>
+                        <input type="text" name="participants" id="participants">
+
+                        <button type="submit">Add Event</button>
+                    </form>
+                </div>
+            </div>
         </section>
 
         <section>
@@ -75,6 +104,65 @@
         }
 
         loadHomeEvents();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const newEvent = document.getElementById('add-event');
+            const openBtn = document.querySelector('.add-event-btn');
+            const closeBtn = document.querySelector('.close');
+            const eventForm = document.getElementById('eventForm');
+
+            openBtn.addEventListener('click', () => {
+                newEvent.style.display = 'block';
+            });
+
+            closeBtn.addEventListener('click', () => {
+                newEvent.style.display = 'none';
+            });
+
+            eventForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                let dateInput = document.getElementById('date').value;
+
+                let dateObj = new Date(dateInput);
+
+                let formattedDate = dateObj.getFullYear() + '-' +
+                    String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(dateObj.getDate()).padStart(2, '0') + ' ' +
+                    String(dateObj.getHours()).padStart(2, '0') + ':' +
+                    String(dateObj.getMinutes()).padStart(2, '0') + ':' +
+                    String(dateObj.getSeconds()).padStart(2, '0');
+
+                const eventData = {
+                    date: formattedDate,
+                    sport: document.getElementById('sport').value,
+                    competition: document.getElementById('competition').value,
+                    venue: document.getElementById('venue').value,
+                    location: document.getElementById('location').value,
+                    participants: document.getElementById('participants').value,
+                    status: 'scheduled'
+                };
+
+                console.log(eventData);
+
+                try {
+                    const res = await fetch('/api/post_events', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(eventData)
+                    });
+
+                    const result = await res.json()
+
+                    newEvent.style.display = 'none';
+                    eventForm.reset();
+                    loadHomeEvents();
+                } catch (err) {
+                    console.log('Error adding event:', err);
+                }
+            });
+        });
+
     </script>
 </body>
 </html>

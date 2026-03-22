@@ -69,7 +69,12 @@
                     hour: '2-digit',
                     minute: '2-digit'
                 })
-                const venueText = event.venue === '-' ? event.location : `${event.venue}, ${event.location}`
+
+                const venueText =
+                    event.venue === '-' ? event.location :
+                    event.location === '-' ? event.venue :
+                    `${event.venue}, ${event.location}`
+
                 const participantsHTML = formatParticipants(event);
 
                 const div = document.createElement('div');
