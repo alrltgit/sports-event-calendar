@@ -13,13 +13,13 @@ class Event:
     def get_events(self):
         query = """
             SELECT
-                c.Name,
-                e.Date_Time, 
-                s.Name,
-                v.Name,
-                v.Location,
-                e.Status,
-                t.Name 
+                c.Name AS competition,
+                e.Date_Time AS date, 
+                s.Name AS sport,
+                v.Name AS venue,
+                v.Location AS location,
+                e.Status AS status,
+                GROUP_CONCAT(t.Name SEPARATOR ' vs ') AS participants
             FROM Events e
             JOIN Competitions c
                 ON e.Competition_ID = c.ID
@@ -31,7 +31,9 @@ class Event:
                 ON t.ID = p.Team_ID
             JOIN Sports s
                 ON t.Sport_ID = s.ID
+            GROUP BY e.ID, c.Name, s.Name, v.Name, v.Location, e.Status;
             """
+
         return self.db.get_data(query)
 
     def insert_event(self):

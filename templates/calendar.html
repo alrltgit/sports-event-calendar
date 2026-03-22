@@ -3,18 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Calendar</title>
-    <link rel="stylesheet" href="../static/calendar.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
 </head>
 <body>
     <nav>
-        <a href="#home">Home</a>
-        <a href="#calendar">Calendar</a>
-        <a href="#competitions">Competitions</a>
-        <a href="#teams">Teams</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('calendar') }}">Calendar</a>
+        <a href="{{ url_for('competitions') }}">Competitions</a>
+        <a href="{{ url_for('teams') }}">Teams</a>
     </nav>
-    <main></main>
+    <main>
+        <div class="events-calendar" id="events"></div>
+    </main>
     <footer>
         <p>&copy Sports Event Calendar. All rights reserved</p>
     </footer>
+    <script>
+        async function loadEvents() {
+            const res = await fetch('/api/events');
+            const events = await res.json();
+
+            events.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+            const container = document.getElementById('events');
+            container.innerHTML = '';
+
+            events.forEach(event => {
+
+                const date = new Date(event.date);
+
+                const div = document.createElement('div');
+                div.className = 'event-card';
+
+                div.innerHTML = `
+                    <div class="event-header">${event.team}</div>
+                    <div class="event-meta">
+                        ${date.toLocaleString()}<br>
+                        Competition: ${event.competition}<br>
+                        Venue: ${event.venue}
+                    </div>
+                    <div class="status ${event.status}">
+                        ${event.status.toUpperCase()}
+                    </div>
+                `;
+
+                container.appendChild(div);
+            });
+        }
+        loadEvents()
+    </script>
 </body>
 </html>

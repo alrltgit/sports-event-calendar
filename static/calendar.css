@@ -41,6 +41,50 @@ nav a:hover {
     border-radius: 4px;
 }
 
+.events-container {
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.event-card {
+    border: 1px solid #cc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f9f9f9;
+}
+
+.event-header {
+    font-weightL 14px;
+    margin-top: 5px;
+}
+
+.status {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.status {
+    padding: 3px 8px;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.scheduled {
+    background: blue;
+}
+
+.live {
+    background: red;
+}
+
+.finished {
+    background: gray;
+}
+
 main {
     flex: 1;
     padding: 20px;
