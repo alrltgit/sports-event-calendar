@@ -12,9 +12,69 @@
         <a href="{{ url_for('competitions') }}">Competitions</a>
         <a href="{{ url_for('teams') }}">Teams</a>
     </nav>
-    <main></main>
+    <main>
+        <section class="head">
+            <h1>Sports Event Calendar</h1>
+            <p>Track upcoming matches, live events, and results in one place</p>
+        </section>
+
+        <section>
+            <h2>🔴 Live now</h2>
+            <div id="live-events" class="events-container"></div>
+        </section>
+
+        <section>
+            <h2>📆 Upcoming Events</h2>
+            <div id="upcoming-events" class="events-container"></div>
+        </section>
+    </main>
     <footer>
         <p>&copy Sports Event Calendar. All rights reserved</p>
     </footer>
+    <script>
+        async function loadHomeEvents() {
+            const res = await fetch('/api/events');
+            const events = await res.json()
+
+            const current_dat = new Date();
+            const liveContainer = document.getElementById('live-events');
+            const upcomingContainer = document.getElementById('upcoming-events');
+
+            liveContainer.innerHTML = '';
+            upcomingContainer.innerHTML = '';
+
+            events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            events.forEach(event => {
+                const date = new Date(event.date)
+                const formattedDate = date.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const div = document.createElement('div');
+                div.className = 'event-card';
+
+                div.innerHTML = `
+                    <div class="event-header">${event.competition}</div>
+                    <div class="event-participants">${event.participants || event.team}</div>
+                    <div class="event-meta">${formattedDate}</div>
+                `;
+
+                if (event.status === 'live') {
+                    liveContainer.appendChild(div)
+                }
+
+                if (event.status === 'scheduled' && upcomingContainer.children.length < 5) {
+                    upcomingContainer.appendChild(div.cloneNode(true));
+                }
+            })
+        }
+
+        loadHomeEvents();
+    </script>
 </body>
 </html>

@@ -25,15 +25,22 @@ nav {
     display: flex;
     align-items: center;
     padding: 0 20px;
-    height: 50px;
+    height: 70px;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    padding: 14px 20px;
+    padding: 20px 25px;
     display: block;
+    font-size: 1.5rem;
+    font-weight: 500;
     transition: background 0.2s, border-radius 0.2s;
+}
+
+nav a:hover {
+    background-color: #575757;
+    border-radius: 6px;
 }
 
 nav a:hover {

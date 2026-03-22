@@ -25,26 +25,87 @@ nav {
     display: flex;
     align-items: center;
     padding: 0 20px;
-    height: 50px;
+    height: 70px;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    padding: 14px 20px;
+    padding: 20px 25px;
     display: block;
+    font-size: 1.5rem;
+    font-weight: 500;
     transition: background 0.2s, border-radius 0.2s;
 }
 
 nav a:hover {
     background-color: #575757;
-    border-radius: 4px;
+    border-radius: 6px;
 }
 
 main {
     flex: 1;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
+    color: #222;
+}
+
+.head {
+    background-color: #ffffff;
+    color: #111;
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.head p {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #555;
+}
+
+.head h1 {
+    font-size: 2.4rem;
+}
+
+section h2 {
+    font-size: 1.7rem;
+}
+
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+}
+
+.event-card {
+    background-color: #ffffff;  /* bright white cards */
+    color: #111;                /* dark text */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.event-header {
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.event-participants {
+    font-size: 1.2rem;
+}
+
+.event-meta {
+    font-size: 1.2rem;
 }
 
 footer {
