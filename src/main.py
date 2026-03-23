@@ -37,7 +37,7 @@ def get_data():
     return jsonify(records)
 
 @app.route("/api/post_events", methods=['POST'])
-def insert_data():
+def post_data():
     data = request.get_json()
     new_event = Event(db,
         date=data['date'],
@@ -51,14 +51,6 @@ def insert_data():
 
     new_event.insert_event()
     return jsonify({"message": "Event added successfully"}, 200)
-
-@app.route("/competitions")
-def competitions():
-    return render_template("competitions.html")
-
-@app.route("/teams")
-def teams():
-    return render_template("teams.html")
 
 # db.sports_events_db.close()
 

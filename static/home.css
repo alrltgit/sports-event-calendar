@@ -138,7 +138,7 @@ section h2 {
     padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 1.2rem;
     transition: 0.2s;
 }
 
@@ -156,6 +156,7 @@ section h2 {
     background: #007BFF;
     color: white;
     font-weight: bold;
+    font-size: 1.4rem;
     cursor: pointer;
     transition: 0.2s;
 }
