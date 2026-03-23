@@ -31,6 +31,9 @@ class Database:
         self.cursor = self.sports_events_db.cursor()
 
     def add_data(self, sql_query, new_data):
+        if not sql_query:
+            raise ValueError("SQL query cannot be empty")
+
         try:
             self.cursor.execute(sql_query, new_data)
             self.sports_events_db.commit()
@@ -38,7 +41,12 @@ class Database:
         except Exception as e:
             raise DbConnectionError(f"Failed to add data: {e}")
 
+        return self.cursor.lastrowid
+
     def get_data(self, sql_query):
+        if not sql_query:
+            raise ValueError("SQL query cannot be empty")
+
         try:
             query = sql_query
             self.cursor.execute(query)
