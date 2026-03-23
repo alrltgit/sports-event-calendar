@@ -30,6 +30,18 @@ class Database:
 
         self.cursor = self.sports_events_db.cursor()
 
+        path = os.path.join(os.path.dirname(__file__), "../db/sql_scripts/create_sports_events_db.sql")
+        sql_path = os.path.abspath(path)
+
+        with open(sql_path, "r") as file:
+            sql_script = file.read()
+
+        queries = sql_script.split(";")
+        for query in queries:
+            query = query.strip()
+            if query:
+                self.cursor.execute(query)
+
     def add_data(self, sql_query, new_data):
         if not sql_query:
             raise ValueError("SQL query cannot be empty")

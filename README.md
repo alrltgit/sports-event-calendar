@@ -19,7 +19,13 @@ Database: MySQL<br>
 
 ### How to set up and run the app:
 1. Install dependencies: `pip install -r requirements.txt`
-2. Run the application (from the project folder): `python3 src/main.py`
+2. Create a `.env` file in the project root and specify these variables:
+```
+DB_USER=your_mysql_username
+DB_PASSWORD=your_mysql_password
+DATABASE=Sports_Events
+```
+3. Run the application (from the project folder): `python3 src/main.py`
 
 ### Assumptions and decisions:
 - MySQL is used to store structured data.
