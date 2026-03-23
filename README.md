@@ -17,4 +17,15 @@ Backend: Python with Flask framework<br>
 Frontend: HTML, CSS, JavaScript<br>
 Database: MySQL<br>
 
+### How to set up and run the app:
+1. Install dependencies: `pip install -r requirements.txt`
+2. Run the application (from the project folder): `python3 src/main.py`
+
+### Assumptions and decisions:
+- MySQL is used to store structured data.
+- The database consists of 6 tables, each responsible for a different part of event data.
+- Tables are connected with foreign keys to prevent data duplication.
+- A `Database` class is used to reuse common database operations.
+- JavaScript is used to filter data dynamically on the frontend.
+- Flask is used handle API requests and send data to the frontend.
 
