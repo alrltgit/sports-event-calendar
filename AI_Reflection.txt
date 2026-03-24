@@ -1,0 +1,7 @@
+While working on the Sports Event Calendar application, I used the AI tool ChatGPT as support for the following purposes:
+
+- I used it to find information by writing prompts.
+- It helped me refresh my knowledge of JavaScript and understand how to use it to implement my ideas for this project.
+- I also used it to get ideas for the webside design, especially for CSS styling.
+
+ChatGPT helped me work more efficiently due to his ability to provide information quickly.

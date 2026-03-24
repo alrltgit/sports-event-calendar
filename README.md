@@ -23,7 +23,7 @@ Database: MySQL<br>
 ```
 DB_USER=your_mysql_username
 DB_PASSWORD=your_mysql_password
-DATABASE=Sports_Events
+DATABASE="Sports_Events"
 ```
 3. Run the application (from the project folder): `python3 src/main.py`
 
