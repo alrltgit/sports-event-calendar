@@ -13,7 +13,7 @@ Calendar Page
 - Supports adding new events directly through the interface.
 
 ### Technical Stack:
-Backend: Python with Flask framework<br>
+Backend: Python with Flask framework and SQLAlchemy<br>
 Frontend: HTML, CSS, JavaScript<br>
 Database: MySQL<br>
 
@@ -34,4 +34,3 @@ DATABASE="Sports_Events"
 - A `Database` class is used to reuse common database operations.
 - JavaScript is used to filter data dynamically on the frontend.
 - Flask is used handle API requests and send data to the frontend.
-

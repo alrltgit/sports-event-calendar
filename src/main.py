@@ -52,7 +52,5 @@ def post_data():
     new_event.insert_event()
     return jsonify({"message": "Event added successfully"}, 200)
 
-# db.sports_events_db.close()
-
 if __name__ == "__main__":
     app.run()

@@ -1,6 +1,8 @@
-import mysql.connector
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine import URL
 
 load_dotenv()
 
@@ -16,56 +18,45 @@ class Database:
         self.user = os.getenv("DB_USER")
         self.password = os.getenv("DB_PASSWORD")
         self.database = os.getenv("DATABASE")
-        self.cursor = None
-        self.sports_events_db = None
+        self.host = os.getenv("DB_HOST", "localhost")
+        self.port = int(os.getenv("DB_PORT", "3307"))
+        self.engine = None
         self.connect()
 
     def connect(self):
-        self.sports_events_db = mysql.connector.connect(
-            host = "localhost",
-            user = self.user,
-            password = self.password,
-            database = self.database
+        database_url = URL.create(
+            "mysql+pymysql",
+            username=self.user,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+            database=self.database,
         )
-
-        self.cursor = self.sports_events_db.cursor()
-
-        path = os.path.join(os.path.dirname(__file__), "../db/sql_scripts/create_sports_events_db.sql")
-        sql_path = os.path.abspath(path)
-
-        with open(sql_path, "r") as file:
-            sql_script = file.read()
-
-        queries = sql_script.split(";")
-        for query in queries:
-            query = query.strip()
-            if query:
-                self.cursor.execute(query)
+        self.engine = create_engine(database_url)
 
     def add_data(self, sql_query, new_data):
         if not sql_query:
             raise ValueError("SQL query cannot be empty")
 
         try:
-            self.cursor.execute(sql_query, new_data)
-            self.sports_events_db.commit()
+            with self.engine.begin() as connection:
+                result = connection.execute(text(sql_query), new_data)
 
         except Exception as e:
             raise DbConnectionError(f"Failed to add data: {e}")
 
-        return self.cursor.lastrowid
+        return result.lastrowid
 
-    def get_data(self, sql_query):
+    def get_data(self, sql_query, params=None):
         if not sql_query:
             raise ValueError("SQL query cannot be empty")
 
         try:
-            query = sql_query
-            self.cursor.execute(query)
-            data = self.cursor.fetchall()
+            with self.engine.connect() as connection:
+                result = connection.execute(text(sql_query), params or {})
+                data = result.fetchall()
 
         except Exception as e:
-            raise DbConnectionError(f"Failed to add data: {e}")
+            raise DbConnectionError(f"Failed to get data: {e}")
 
         return data
-

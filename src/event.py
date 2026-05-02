@@ -37,143 +37,88 @@ class Event:
         return self.db.get_data(query)
 
     def insert_event(self):
-        sport_query = f"SELECT ID FROM Sports WHERE Name = \"{self.sport}\""
-        competition_query = "INSERT INTO Competitions (Name, Sport_ID) VALUES (%s, %s)"
-        venue_query = "INSERT INTO Venues (Name, Location) VALUES (%s, %s)"
-        event_query = "INSERT INTO Events (Date_Time, Competition_ID, Venue_ID, Status) VALUES (%s, %s, %s, %s)"
-        teams_query = "INSERT INTO Teams (Name, Description, Sport_ID) VALUES (%s, %s, %s)"
-        participants_query = "INSERT INTO Event_Participants (Event_ID, Team_ID, Role) VALUES (%s, %s, %s)"
+        sport_query = "SELECT ID FROM Sports WHERE Name = :sport"
+        competition_query = "INSERT INTO Competitions (Name, Sport_ID) VALUES (:competition, :sport_id)"
+        venue_query = "INSERT INTO Venues (Name, Location) VALUES (:venue, :location)"
+        event_query = """
+            INSERT INTO Events (Date_Time, Competition_ID, Venue_ID, Status)
+            VALUES (:date, :competition_id, :venue_id, :status)
+        """
+        teams_query = """
+            INSERT INTO Teams (Name, Description, Sport_ID)
+            VALUES (:team, :team_description, :sport_id)
+        """
+        participants_query = """
+            INSERT INTO Event_Participants (Event_ID, Team_ID, Role)
+            VALUES (:event_id, :team_id, :role)
+        """
 
-        sport_id = self.db.get_data(sport_query)
+        sport_id = self.db.get_data(sport_query, {"sport": self.sport})
 
         if not sport_id:
-            add_sport_query = "INSERT INTO Sports (Name) VALUES (%s)"
-            self.db.add_data(add_sport_query, (self.sport, ))
+            add_sport_query = "INSERT INTO Sports (Name) VALUES (:sport)"
+            self.db.add_data(add_sport_query, {"sport": self.sport})
 
-            get_sport_query  = f"SELECT ID FROM Sports WHERE Name = \"{self.sport}\""
-            sport_id = self.db.get_data(get_sport_query)
+            sport_id = self.db.get_data(sport_query, {"sport": self.sport})
 
-        competition_data = (self.competition, sport_id[0][0])
-        self.db.add_data(competition_query, competition_data)
-        competition_id = self.db.cursor.lastrowid
+        competition_data = {"competition": self.competition, "sport_id": sport_id[0][0]}
+        competition_id = self.db.add_data(competition_query, competition_data)
 
-        venue_data =  (self.venue, self.location)
-        self.db.add_data(venue_query, venue_data)
-        venue_id = self.db.cursor.lastrowid
+        venue_data = {"venue": self.venue, "location": self.location}
+        venue_id = self.db.add_data(venue_query, venue_data)
 
-        event_data = (self.date, competition_id, venue_id, self.status)
-        self.db.add_data(event_query, event_data)
-        event_id = self.db.cursor.lastrowid
+        event_data = {
+            "date": self.date,
+            "competition_id": competition_id,
+            "venue_id": venue_id,
+            "status": self.status,
+        }
+        event_id = self.db.add_data(event_query, event_data)
 
-        team_data = (self.team, self.team_description, sport_id[0][0])
-        self.db.add_data(teams_query, team_data)
-        team_id = self.db.cursor.lastrowid
+        team_data = {
+            "team": self.team,
+            "team_description": self.team_description,
+            "sport_id": sport_id[0][0],
+        }
+        team_id = self.db.add_data(teams_query, team_data)
 
-        participants_data = (event_id, team_id, "-")
+        participants_data = {"event_id": event_id, "team_id": team_id, "role": "-"}
         self.db.add_data(participants_query, participants_data)
 
 
     def get_event(self, category, data):
-        query = ""
+        filters = {
+            "date": "e.Date_Time",
+            "competition": "c.Name",
+            "venue": "v.Name",
+            "status": "e.Status",
+        }
+        filter_column = filters.get(category)
+        if not filter_column:
+            raise ValueError("Invalid event category")
 
-        match category:
-            case "date":
-                query = f"""
-                    SELECT
-                        c.Name,
-                        e.Date_Time, 
-                        s.Name,
-                        v.Name,
-                        v.Location,
-                        e.Status,
-                        t.Name 
-                    FROM Events e
-                    JOIN Competitions c
-                        ON e.Competition_ID = c.ID
-                    JOIN Venues v
-                        ON e.Venue_ID = v.ID
-                    JOIN Event_Participants p
-                        ON e.ID = p.Event_ID
-                    JOIN Teams t
-                        ON t.ID = p.Team_ID
-                    JOIN Sports s
-                        ON t.Sport_ID = s.ID
-                    WHERE e.Date_Time = \"{data}\"
-                    LIMIT 1
-                    """
-            case "competition":
-                query = f"""
-                    SELECT
-                        c.Name,
-                        e.Date_Time, 
-                        s.Name,
-                        v.Name,
-                        v.Location,
-                        e.Status,
-                        t.Name 
-                    FROM Events e
-                    JOIN Competitions c
-                        ON e.Competition_ID = c.ID
-                    JOIN Venues v
-                        ON e.Venue_ID = v.ID
-                    JOIN Event_Participants p
-                        ON e.ID = p.Event_ID
-                    JOIN Teams t
-                        ON t.ID = p.Team_ID
-                    JOIN Sports s
-                        ON t.Sport_ID = s.ID
-                    WHERE c.Name = \"{data}\"
-                    LIMIT 1
-                    """
-            case "venue":
-                query = f"""
-                    SELECT
-                        c.Name,
-                        e.Date_Time, 
-                        s.Name,
-                        v.Name,
-                        v.Location,
-                        e.Status,
-                        t.Name 
-                    FROM Events e
-                    JOIN Competitions c
-                        ON e.Competition_ID = c.ID
-                    JOIN Venues v
-                        ON e.Venue_ID = v.ID
-                    JOIN Event_Participants p
-                        ON e.ID = p.Event_ID
-                    JOIN Teams t
-                        ON t.ID = p.Team_ID
-                    JOIN Sports s
-                        ON t.Sport_ID = s.ID
-                    WHERE v.Name = \"{data}\"
-                    LIMIT 1
-                    """
-            case "status":
-                query = f"""
-                    SELECT
-                        c.Name,
-                        e.Date_Time, 
-                        s.Name,
-                        v.Name,
-                        v.Location,
-                        e.Status,
-                        t.Name 
-                    FROM Events e
-                    JOIN Competitions c
-                        ON e.Competition_ID = c.ID
-                    JOIN Venues v
-                        ON e.Venue_ID = v.ID
-                    JOIN Event_Participants p
-                        ON e.ID = p.Event_ID
-                    JOIN Teams t
-                        ON t.ID = p.Team_ID
-                    JOIN Sports s
-                        ON t.Sport_ID = s.ID
-                    WHERE e.Status = \"{data}\"
-                    LIMIT 1
-                    """
-            case _:
-                print("Wrong category!")
+        query = f"""
+            SELECT
+                c.Name,
+                e.Date_Time, 
+                s.Name,
+                v.Name,
+                v.Location,
+                e.Status,
+                t.Name 
+            FROM Events e
+            JOIN Competitions c
+                ON e.Competition_ID = c.ID
+            JOIN Venues v
+                ON e.Venue_ID = v.ID
+            JOIN Event_Participants p
+                ON e.ID = p.Event_ID
+            JOIN Teams t
+                ON t.ID = p.Team_ID
+            JOIN Sports s
+                ON t.Sport_ID = s.ID
+            WHERE {filter_column} = :data
+            LIMIT 1
+            """
 
-        return self.db.get_data(query)
+        return self.db.get_data(query, {"data": data})
